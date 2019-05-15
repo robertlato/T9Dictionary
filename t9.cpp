@@ -14,13 +14,13 @@ struct Node // digit trie
 {
     struct Node *key[8] = {}; // array of 8 Node ptrs
     struct Word_trie *word_trie = nullptr;
-    bool if_word = false;
 };
 
 struct Word_trie
 {
     struct Word_trie *letter[26] = {}; // array of 26 Word_trie ptrs
     struct Word_trie *parent = nullptr;
+    bool if_word = false;
 };
 
 //*****************************************************************************
@@ -102,4 +102,21 @@ void insert(struct Node *root, char digit_arr[], char word[])
     // creating word trie "inside" digit trie node
     curr->word_trie = new struct Word_trie;
     insert_word(word, curr->word_trie);
+}
+
+void insert_word(char word[], struct Word_trie *root)
+{
+    int i = 0;
+    struct Word_trie *curr = root;
+    while (word[i] != '\0' && i < 100)
+    {
+        if (curr->letter[word[i] - 'a'] == nullptr)
+        {
+            curr->letter[word[i] - 'a'] = new struct Word_trie;
+            curr->letter[word[i] - 'a']->parent = curr;
+        }
+        curr = curr->letter[word[i] - 'a'];
+        i++;
+    }
+    curr->if_word = true;
 }
