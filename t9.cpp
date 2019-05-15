@@ -10,16 +10,25 @@
 
 using namespace std;
 
-struct Node
+struct Node // digit trie
 {
-    struct Node *character[8]; // array of 26 Node ptrs
-    bool if_word;
+    struct Node *key[8] = {}; // array of 8 Node ptrs
+    struct Word_trie *word_trie = nullptr;
+    bool if_word = false;
+};
+
+struct Word_trie
+{
+    struct Word_trie *letter[26] = {}; // array of 26 Word_trie ptrs
+    struct Word_trie *parent = nullptr;
 };
 
 //*****************************************************************************
 //****** fuction declaration ******//
 
 void char_to_digit(char word[], char digits[]);
+void insert(struct Node *root, char digit_arr[], char word[]);
+void insert_word(char word[], struct Word_trie *root);
 
 //*****************************************************************************
 //****** main program ********// 
@@ -27,6 +36,7 @@ void char_to_digit(char word[], char digits[]);
 int main()
 {
     int words;
+    struct Node *root = nullptr;
     int query;
     char arr[100]; 
     char digit_arr[100];
@@ -38,6 +48,7 @@ int main()
             cin >> arr;
             char_to_digit(arr, digit_arr);
             cout << "Drukuje digit_arr: " << digit_arr << endl;
+            insert(root, digit_arr, arr);
             // add digits to trie
             // save word on a last digit
         }
@@ -70,4 +81,25 @@ void char_to_digit(char word[], char digits[])
         else if (word[i] - 0 > 118 && word[i] - 0 < 123) digits[i] = '9';
         i++;
     }
+}
+
+void insert(struct Node *root, char digit_arr[], char word[])
+{
+    int i = 0;
+    if (!root) root = new struct Node;
+    struct Node *curr = root;
+    while (digit_arr[i] != '\0' && i < 100)
+    {
+        if (curr->key[(digit_arr[i] - 0) - 2] == nullptr)
+        {
+            curr->key[(digit_arr[i] - 0) - 2] = new struct Node;
+        }
+        curr = curr->key[(digit_arr[i] - 0) - 2];
+        i++;
+    }
+    // digits loaded into trie
+    // add word into word trie
+    // creating word trie "inside" digit trie node
+    curr->word_trie = new struct Word_trie;
+    insert_word(word, curr->word_trie);
 }
