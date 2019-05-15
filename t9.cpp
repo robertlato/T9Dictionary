@@ -29,6 +29,9 @@ struct Word_trie
 void char_to_digit(char word[], char digits[]);
 void insert(struct Node *root, char digit_arr[], char word[]);
 void insert_word(char word[], struct Word_trie *root);
+void print_trie(struct Node *root, char digits_arr[]);
+void print_word_trie(struct Word_trie *root);
+void print_digit_trie(struct Node *root);
 
 //*****************************************************************************
 //****** main program ********// 
@@ -56,6 +59,12 @@ int main()
         for (int j = 0; j < query; j++)
         {
             cin >> arr;
+            print_trie(root, arr);
+            // check if such combination of digits exist in digit trie
+            // if not print -
+            // if yes - print every word of this number and \n
+            // then skip to a node pointed by this digit 
+            // and iterate through digits and do the same
             // return all matching to query words in lexicographical order
         }
     }
@@ -83,6 +92,9 @@ void char_to_digit(char word[], char digits[])
     }
 }
 
+
+// insert digits to a digit trie
+
 void insert(struct Node *root, char digit_arr[], char word[])
 {
     int i = 0;
@@ -104,6 +116,9 @@ void insert(struct Node *root, char digit_arr[], char word[])
     insert_word(word, curr->word_trie);
 }
 
+
+// insert word to a word trie 
+
 void insert_word(char word[], struct Word_trie *root)
 {
     int i = 0;
@@ -119,4 +134,47 @@ void insert_word(char word[], struct Word_trie *root)
         i++;
     }
     curr->if_word = true;
+}
+
+void print_trie(struct Node *root, char digit_arr[])
+{
+    // check if such combination of digits exist in digit trie
+    // print "-" if not
+    bool if_exist = true;
+    int i = 0;
+    struct Node *curr = root;
+    while (digit_arr[i] != '\0' && i < 100)
+    {
+        if (curr->key[(digit_arr[i] - 0) - 2] == nullptr)
+        {
+            cout << "-\n";
+            if_exist = false;
+            break;
+        }
+        curr = curr->key[(digit_arr[i] - 0) - 2];
+        i++;
+    }
+    // if yes - print every word of this number and
+    // iterate through other digits and print every word left, starting from curr
+    if (if_exist)
+    {
+        // print_word_trie(curr->word_trie);
+        print_digit_trie(curr);
+    }
+    // else do nothing 
+}
+
+// print all words starting from *root
+void print_digit_trie(struct Node *root)
+{
+    struct Node *curr = root;
+    print_word_trie(curr->word_trie);
+    for (int i = 0; i < 8; i++)
+    {
+        if (curr->key[i] != nullptr) 
+        {
+            curr = curr->key[i];
+            print_digit_trie(curr);
+        }
+    }
 }
