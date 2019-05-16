@@ -160,7 +160,8 @@ void print_trie(struct Node *root, char digit_arr[])
     if (if_exist)
     {
         // print_word_trie(curr->word_trie);
-        print_digit_trie(curr); // segmantation fault
+        print_digit_trie(curr);
+        cout << endl;
     }
     // else do nothing 
 }
@@ -170,13 +171,12 @@ void print_digit_trie(struct Node *root)
 {
     struct Node *curr = root;
     if (curr->word_trie) print_word_trie(curr->word_trie);
-    cout << endl;
     for (int i = 0; i < 8; i++)
     {
         if (curr->key[i] != nullptr) 
         {
-            curr = curr->key[i];
-            print_digit_trie(curr);
+            //curr = curr->key[i];
+            print_digit_trie(curr->key[i]);
         }
     }
 }
