@@ -30,8 +30,8 @@ void char_to_digit(char word[], char digits[]);
 struct Node* insert(struct Node *root, char digit_arr[], char word[]);
 void insert_word(char word[], struct Word_trie *root);
 void print_trie(struct Node *root, char digits_arr[]);
-void print_word_trie(struct Word_trie *root);
-void print_digit_trie(struct Node *root);
+void print_word_trie(struct Word_trie *root, char digit_arr[], int index);
+void print_digit_trie(struct Node *root, char digit_arr[]);
 
 //*****************************************************************************
 //****** main program ********// 
@@ -160,29 +160,29 @@ void print_trie(struct Node *root, char digit_arr[])
     if (if_exist)
     {
         // print_word_trie(curr->word_trie);
-        print_digit_trie(curr);
+        print_digit_trie(curr, digit_arr);
         cout << endl;
     }
     // else do nothing 
 }
 
 // print all words starting from *root
-void print_digit_trie(struct Node *root)
+void print_digit_trie(struct Node *root, char digit_arr[])
 {
     struct Node *curr = root;
-    if (curr->word_trie) print_word_trie(curr->word_trie);
+    if (curr->word_trie) print_word_trie(curr->word_trie, digit_arr, 0);
     for (int i = 0; i < 8; i++)
     {
         if (curr->key[i] != nullptr) 
         {
             //curr = curr->key[i];
-            print_digit_trie(curr->key[i]);
+            print_digit_trie(curr->key[i], digit_arr);
         }
     }
 }
 
 // print words from word_trie
-void print_word_trie(struct Word_trie *root)
+void print_word_trie(struct Word_trie *root, char digit_arr[], int index)
 {
     // create one array for all words
     struct Word_trie *curr = root;
@@ -190,12 +190,25 @@ void print_word_trie(struct Word_trie *root)
     {
         if (curr->letter[i] != nullptr)
         {
-            cout << char(97 + i); // convert i element of array into letter
+            digit_arr[index] = char(97 + i); // convert i element of array into letter
+            // cout << char(97 + i); // convert i element of array into letter
+            index++;
             if (curr->letter[i]->if_word == true) 
             {
+                // cout digit_arr 
+                digit_arr[index] = '\0';
+                int i = 0;
+                while (digit_arr[i] != '\0' && i < 100)
+                {
+                    cout << digit_arr[i];
+                    i++;
+                }
                 cout << " "; 
+                //index--;
+                break; // shorten duration of the loop (in some cases)
             }
-            else print_word_trie(curr->letter[i]);
+            else print_word_trie(curr->letter[i], digit_arr, index);
+            index--;
         }
     }
 }
