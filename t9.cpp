@@ -136,7 +136,7 @@ void insert_word(char word[], struct Word_trie *root)
 {
     int i = 0;
     struct Word_trie *curr = root;
-    while (i < 100 && word[i] != '\0')
+    while (i < 101 && word[i] != '\0')
     {
         if (curr->letter[word[i] - 'a'] == nullptr)
         {
@@ -156,7 +156,7 @@ void print_trie(struct Node *root, char digit_arr[])
     bool if_exist = true;
     int i = 0;
     struct Node *curr = root;
-    while (i < 100 && digit_arr[i] != '\0')
+    while (i < 101 && digit_arr[i] != '\0')
     {
         if (curr->key[(digit_arr[i] - 50)] == nullptr)
         {
@@ -172,6 +172,12 @@ void print_trie(struct Node *root, char digit_arr[])
     if (if_exist)
     {
         // print_word_trie(curr->word_trie);
+        i = 0;
+        // while (i < 101)
+        // {
+        //     digit_arr[i] = 0;
+        //     i++;
+        // }
         print_digit_trie(curr, digit_arr);
         cout << endl;
     }
@@ -210,14 +216,14 @@ void print_word_trie(struct Word_trie *root, char digit_arr[], int index)
                 // cout digit_arr 
                 digit_arr[index] = '\0';
                 int i = 0;
-                while (i < 100 && digit_arr[i] != '\0')
+                while (i < 101 && digit_arr[i] != '\0')
                 {
                     cout << digit_arr[i];
                     i++;
                 }
                 cout << " "; 
                 //index--;
-                break; // shorten duration of the loop (in some cases)
+                //break; // shorten duration of the loop (in some cases)
             }
             else print_word_trie(curr->letter[i], digit_arr, index);
             index--;
