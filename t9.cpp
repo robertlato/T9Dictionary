@@ -222,7 +222,6 @@ void print_word_trie(struct Word_trie *root, char digit_arr[], int index)
                     i++;
                 }
                 cout << " "; 
-                //index--;
                 //break; // shorten duration of the loop (in some cases)
             }
             else print_word_trie(curr->letter[i], digit_arr, index);
