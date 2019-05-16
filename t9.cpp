@@ -41,25 +41,25 @@ int main()
     int words;
     struct Node *root = nullptr;
     int query;
-    char arr[100]; 
+    char char_arr[100]; 
     char digit_arr[100];
     //struct Node *root = nullptr;
     while (cin >> words)
     {
         for (int i = 0; i < words; i++)
         {
-            cin >> arr;
-            char_to_digit(arr, digit_arr);
-            if (!root) root = insert(root, digit_arr, arr);
-            else insert(root, digit_arr, arr);
+            cin >> char_arr;
+            char_to_digit(char_arr, digit_arr);
+            if (!root) root = insert(root, digit_arr, char_arr);
+            else insert(root, digit_arr, char_arr);
             // add digits to trie
             // save word on a last digit
         }
         cin >> query;
         for (int j = 0; j < query; j++)
         {
-            cin >> arr;
-            print_trie(root, arr); // segmentation fault
+            cin >> digit_arr;
+            print_trie(root, digit_arr);
             // check if such combination of digits exist in digit trie
             // if not print -
             // if yes - print every word of this number and \n
