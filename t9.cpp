@@ -112,7 +112,7 @@ struct Node* insert(struct Node *root, char digit_arr[], char word[])
     // digits loaded into trie
     // add word into word trie
     // creating word trie "inside" digit trie node
-    curr->word_trie = new struct Word_trie;
+    if (!curr->word_trie) curr->word_trie = new struct Word_trie;
     insert_word(word, curr->word_trie);
     return root;
 }
