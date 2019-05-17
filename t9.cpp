@@ -1,9 +1,17 @@
 /*
-    Autor: Robert Latoszewski
-    Date: 03.05.2019
+    Author: Robert Latoszewski
+    Date: 17.05.2019
 
     Description: 
-        T9 dictionary
+        T9 dictionary (by using a Trie structures)
+    Input: 
+        - Number of words to load into dictionary
+        - Words
+        - Number of queries
+        - Queries
+    Output:
+        - All matching with query words and predictions
+        based on the beginning of the word
 */
 
 #include <iostream>
