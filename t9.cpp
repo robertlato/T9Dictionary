@@ -13,7 +13,7 @@ using namespace std;
 struct Word_trie
 {
     struct Word_trie *letter[26] = {}; // array of 26 Word_trie ptrs
-    struct Word_trie *parent = nullptr;
+    struct Word_trie *parent = nullptr; // useless, delete later
     bool if_word = false;
 };
 
@@ -35,6 +35,10 @@ void insert_word(char word[], struct Word_trie *root);
 void print_trie(struct Node *root, char digit_arr[]);
 void print_word_trie(struct Word_trie *root, char digit_arr[], int index);
 void print_digit_trie(struct Node *root, char digit_arr[]);
+void delete_digit_trie(struct Node *root);
+void delete_char_trie(struct Word_trie *root);
+
+
 
 //*****************************************************************************
 //****** main program ********// 
@@ -77,6 +81,7 @@ int main()
             // return all matching to query words in lexicographical order
         }
     }
+    if (root) delete_digit_trie(root);
     return 0;
 }
 
@@ -224,10 +229,29 @@ void print_word_trie(struct Word_trie *root, char digit_arr[], int index)
                     i++;
                 }
                 cout << " "; 
-                //break; // shorten duration of the loop (in some cases)
             }
             else print_word_trie(curr->letter[i], digit_arr, index);
             index--;
         }
     }
+}
+
+void delete_digit_trie(struct Node *root)
+{
+    struct Node *curr = root;
+    for (int i = 0; i < 8; i++)
+    {
+        if (curr->key[i]) delete_digit_trie(curr->key[i]);
+    }
+    if (curr->word_trie) delete_char_trie(curr->word_trie);
+    delete curr;
+}
+void delete_char_trie(struct Word_trie *root)
+{
+    struct Word_trie *curr = root;
+    for (int i = 0; i < 26; i++)
+    {
+        if (curr->letter[i]) delete_char_trie(curr->letter[i]);
+    }
+    delete curr;
 }
