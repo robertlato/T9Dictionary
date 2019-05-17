@@ -51,6 +51,7 @@ int main()
         {
             cin >> char_arr;
             char_to_digit(char_arr, digit_arr);
+            // cout << "Printing digit_arr: " << digit_arr << endl;
             if (!root) root = insert(root, digit_arr, char_arr);
             else insert(root, digit_arr, char_arr);
             // add digits to trie
@@ -98,6 +99,7 @@ void char_to_digit(char word[], char digits[])
         else if (word[i] - 0 > 118 && word[i] - 0 < 123) digits[i] = '9';
         i++;
     }
+    digits[i] = '\0';
 }
 
 
