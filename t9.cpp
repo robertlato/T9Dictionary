@@ -106,21 +106,18 @@ struct Node* insert(struct Node *root, char digit_arr[], char word[])
     int i = 0;
     if (!root) root = new struct Node;
     struct Node *curr = root;
-    //if (digit_arr[i] - 0 > 49 && digit_arr[i] - 0 < 58)
-    //{
-        // "load" digits into digit_trie
-        while (i < 101 && digit_arr[i] != '\0')
+    // "load" digits into digit_trie
+    while (i < 101 && digit_arr[i] != '\0')
+    {
+        if (curr->key[(digit_arr[i] - 50)] == nullptr)
         {
-            if (curr->key[(digit_arr[i] - 50)] == nullptr)
-            {
-                curr->key[(digit_arr[i] - 50)] = new struct Node;
-            }
-            curr = curr->key[(digit_arr[i] - 50)];
-            i++;
+            curr->key[(digit_arr[i] - 50)] = new struct Node;
         }
-    //}
+        curr = curr->key[(digit_arr[i] - 50)];
+        i++;
+    }
     // digits loaded into trie
-    // creating word trie "inside" digit trie node
+    // create word trie "inside" digit trie node
     if (!curr->word_trie) curr->word_trie = new struct Word_trie;
     insert_word(word, curr->word_trie); // add word into word trie
     return root;
