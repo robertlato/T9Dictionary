@@ -44,21 +44,19 @@ void delete_char_trie(struct Word_trie *root);
 
 int main()
 {
-    int words;
+    int words; // number of words
     struct Node *root = nullptr;
-    int query;
-    //struct Node *root = nullptr;
+    int query; // number of queries
     while (cin >> words)
     {
         for (int i = 0; i < words; i++)
         {
             cin >> char_arr;
             char_to_digit(char_arr, digit_arr);
-            // cout << "Printing digit_arr: " << digit_arr << endl;
-            if (!root) root = insert(root, digit_arr, char_arr);
-            else insert(root, digit_arr, char_arr);
             // add digits to trie
             // save word on a last digit
+            if (!root) root = insert(root, digit_arr, char_arr);
+            else insert(root, digit_arr, char_arr);
         }
         cin >> query;
         for (int j = 0; j < query; j++)
@@ -72,12 +70,6 @@ int main()
                 i++;
             }
             print_trie(root, digit_arr);
-            // check if such combination of digits exist in digit trie
-            // if not print -
-            // if yes - print every word of this number and \n
-            // then skip to a node pointed by this digit 
-            // and iterate through digits and do the same
-            // return all matching to query words in lexicographical order
         }
     }
     if (root) delete_digit_trie(root);
@@ -103,7 +95,7 @@ void char_to_digit(char word[], char digits[])
         else if (word[i] - 0 > 118 && word[i] - 0 < 123) digits[i] = '9';
         i++;
     }
-    digits[i] = '\0';
+    digits[i] = '\0'; // mark end of the word
 }
 
 
@@ -114,11 +106,11 @@ struct Node* insert(struct Node *root, char digit_arr[], char word[])
     int i = 0;
     if (!root) root = new struct Node;
     struct Node *curr = root;
-    if (digit_arr[i] - 0 > 49 && digit_arr[i] - 0 < 58)
-    {
+    //if (digit_arr[i] - 0 > 49 && digit_arr[i] - 0 < 58)
+    //{
+        // "load" digits into digit_trie
         while (i < 101 && digit_arr[i] != '\0')
         {
-            //cout << "digit_arr[i] = " << digit_arr[i] << endl;
             if (curr->key[(digit_arr[i] - 50)] == nullptr)
             {
                 curr->key[(digit_arr[i] - 50)] = new struct Node;
@@ -126,12 +118,11 @@ struct Node* insert(struct Node *root, char digit_arr[], char word[])
             curr = curr->key[(digit_arr[i] - 50)];
             i++;
         }
-    }
+    //}
     // digits loaded into trie
-    // add word into word trie
     // creating word trie "inside" digit trie node
     if (!curr->word_trie) curr->word_trie = new struct Word_trie;
-    insert_word(word, curr->word_trie);
+    insert_word(word, curr->word_trie); // add word into word trie
     return root;
 }
 
@@ -172,17 +163,11 @@ void print_trie(struct Node *root, char digit_arr[])
         curr = curr->key[(digit_arr[i] - 50)];
         i++;
     }
-    // if yes - print every word of this number and
+    // if exist - print every word of this number
     // iterate through other digits and print every word left, starting from curr
     if (if_exist)
     {
-        // print_word_trie(curr->word_trie);
         i = 0;
-        // while (i < 101)
-        // {
-        //     digit_arr[i] = 0;
-        //     i++;
-        // }
         print_digit_trie(curr, digit_arr);
         cout << endl;
     }
@@ -198,7 +183,6 @@ void print_digit_trie(struct Node *root, char digit_arr[])
     {
         if (curr->key[i] != nullptr) 
         {
-            //curr = curr->key[i];
             print_digit_trie(curr->key[i], digit_arr);
         }
     }
@@ -207,18 +191,16 @@ void print_digit_trie(struct Node *root, char digit_arr[])
 // print words from word_trie
 void print_word_trie(struct Word_trie *root, char digit_arr[], int index)
 {
-    // create one array for all words
     struct Word_trie *curr = root;
     for (int i = 0; i < 26; i++)
     {
         if (curr->letter[i] != nullptr)
         {
-            digit_arr[index] = char(97 + i); // convert i element of array into letter
-            // cout << char(97 + i); // convert i element of array into letter
+            // convert i element of array into letter
+            digit_arr[index] = char(97 + i); 
             index++;
             if (curr->letter[i]->if_word == true) 
             {
-                // cout digit_arr 
                 digit_arr[index] = '\0';
                 int i = 0;
                 while (i < 101 && digit_arr[i] != '\0')
@@ -244,6 +226,7 @@ void delete_digit_trie(struct Node *root)
     if (curr->word_trie) delete_char_trie(curr->word_trie);
     delete curr;
 }
+
 void delete_char_trie(struct Word_trie *root)
 {
     struct Word_trie *curr = root;
