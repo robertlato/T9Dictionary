@@ -13,7 +13,6 @@ using namespace std;
 struct Word_trie
 {
     struct Word_trie *letter[26] = {}; // array of 26 Word_trie ptrs
-    struct Word_trie *parent = nullptr; // useless, delete later
     bool if_word = false;
 };
 
@@ -148,7 +147,6 @@ void insert_word(char word[], struct Word_trie *root)
         if (curr->letter[word[i] - 'a'] == nullptr)
         {
             curr->letter[word[i] - 'a'] = new struct Word_trie;
-            curr->letter[word[i] - 'a']->parent = curr;
         }
         curr = curr->letter[word[i] - 'a'];
         i++;
